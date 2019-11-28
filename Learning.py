@@ -23,7 +23,7 @@ nb_validation_samples = 357
 # Количество изображений для тестирования
 nb_test_samples = 362
 
-# Нейронная сеть взята с https://colab.research.google.com/github/tensorflow/docs/blob/master/site/en/tutorials/quickstart/beginner.ipynb#scrollTo=h3IKyzTCDNGo
+"""# Нейронная сеть взята с https://colab.research.google.com/github/tensorflow/docs/blob/master/site/en/tutorials/quickstart/beginner.ipynb#scrollTo=h3IKyzTCDNGo
 # Подробнее https://www.tensorflow.org/overview
 # Она не выбрана TODO
 
@@ -37,7 +37,29 @@ model = tf.keras.models.Sequential([
 # Компиляция 
 model.compile(optimizer='adam',
               loss='sparse_categorical_crossentropy',
-              metrics=['accuracy'])
+              metrics=['accuracy'])"""
+model = tf.keras.models.Sequential()
+# Каскады свёртки и подвыборки для выделения выжных признаков изображения
+model.add(Conv2D(32, (3, 3), input_shape=input_shape))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+
+model.add(Conv2D(32, (3, 3)))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+
+model.add(Conv2D(64, (3, 3)))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+
+# Полносвязная часть для классификации
+model.add(Flatten())
+model.add(Dense(64))
+model.add(Activation('relu'))
+
+model.add(Dense(5, activation="softmax"))
+
+model.compile(loss="categorical_crossentropy", optimizer="SGD", metrics=["accuracy"])
 
 # Генератор изображений
 datagen = tf.keras.preprocessing.image.ImageDataGenerator(rescale=1. / 255)

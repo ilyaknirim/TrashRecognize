@@ -13,7 +13,7 @@ img_width, img_height = 150, 150
 # backend Tensorflow, channels_last
 input_shape = (img_width, img_height, 3)
 # Количество эпох
-epochs = 30
+epochs = 1
 # Размер мини-выборки
 batch_size = 16
 # Количество изображений для обучения
@@ -56,7 +56,7 @@ model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Flatten())
 model.add(Dense(64))
 model.add(Activation('relu'))
-
+model.add(Dropout(0.5))
 model.add(Dense(5, activation="softmax"))
 
 model.compile(loss="categorical_crossentropy", optimizer="SGD", metrics=["accuracy"])
